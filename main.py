@@ -19,17 +19,12 @@ def update_resources(coffee_type,Money):
     profit += Money
 
 
-def check_report(coffee_type):
-    if resources['water'] >= coffee_type['ingredients']['water']:
-        if resources['milk'] >= coffee_type['ingredients']['milk']:
-            if resources['coffee']>=coffee_type['ingredients']['coffee']:
-                return True
-            else:
-                return False
-        else:
+def check_report(order_ingredients):
+    for item in order_ingredients:
+        if order_ingredients[item] > resources[item]:
+            print(f"Sorry we don't have enough {item}")
             return False
-    else:
-        return False
+        return True
 
 
 def process_coins():
@@ -45,7 +40,7 @@ def coffee(coffee_type,total):
 
         if total > 0:
             print(f"Here is ${round(total,2)} in change.")
-        print(f"Here is your {coffee_type} Enjoy !")
+        print(f"Here is your {coffee_type} ☕  Enjoy !")
     else:
         print("Sorry that's not enough money.Money Refunded.")
 
@@ -63,7 +58,7 @@ while is_working:
     else:
         key = MENU[user_choice]
         user_deposit  = process_coins()
-        is_available = check_report(key)
+        is_available = check_report(key['ingredients'])
         update_resources(key,profit)
         if is_available:
             coffee(user_choice,user_deposit)
